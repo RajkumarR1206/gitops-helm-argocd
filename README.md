@@ -34,13 +34,13 @@ This setup reflects how real-world teams implement continuous deployment, self-h
   
 <img width="987" height="435" alt="gitops1" src="https://github.com/user-attachments/assets/ad195b3a-ca88-429f-b978-7a9ed7907ad1" />
 
-* ArgoCD Scaling sync:
-
-<img width="1366" height="310" alt="arcd4" src="https://github.com/user-attachments/assets/d02b37d9-f45f-4f5b-946e-06fd4dd70995" />
-
 * Pods after scaling:
   
 <img width="703" height="352" alt="gitops2" src="https://github.com/user-attachments/assets/2eec5d60-79b0-4d38-b61c-80c43e50fb75" />
+
+* ArgoCD Scaling sync:
+
+<img width="1366" height="310" alt="arcd4" src="https://github.com/user-attachments/assets/d02b37d9-f45f-4f5b-946e-06fd4dd70995" />
 
 * Application exposed using NodePort service:
 
