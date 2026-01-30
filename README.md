@@ -14,9 +14,9 @@ This project demonstrates a **production-style GitOps workflow** using **Helm an
 * ArgoCD continuously monitors the Git repository
 * Any change committed to Git is **automatically reconciled** in the cluster
 * Helm is used for templating Kubernetes resources
-* Application scaling is handled through **Git-managed Horizontal Pod Autoscaler (HPA)**
+* Application scaling is managed declaratively via Helm values tracked in Git
 
-This setup reflects how real-world teams implement **continuous deployment, self-healing, and auto-scaling** using GitOps principles.
+This setup reflects how real-world teams implement continuous deployment, self-healing, and configuration-driven scaling using GitOps.
 
 ---
 
@@ -34,13 +34,13 @@ This setup reflects how real-world teams implement **continuous deployment, self
   
 <img width="987" height="435" alt="gitops1" src="https://github.com/user-attachments/assets/ad195b3a-ca88-429f-b978-7a9ed7907ad1" />
 
-* Pods after scaling:
-  
-<img width="703" height="352" alt="gitops2" src="https://github.com/user-attachments/assets/2eec5d60-79b0-4d38-b61c-80c43e50fb75" />
-
 * ArgoCD Scaling sync:
 
 <img width="1366" height="310" alt="arcd4" src="https://github.com/user-attachments/assets/d02b37d9-f45f-4f5b-946e-06fd4dd70995" />
+
+* Pods after scaling:
+  
+<img width="703" height="352" alt="gitops2" src="https://github.com/user-attachments/assets/2eec5d60-79b0-4d38-b61c-80c43e50fb75" />
 
 * Application exposed using NodePort service:
 
@@ -95,22 +95,30 @@ No manual `kubectl apply` is required after initial setup.
 
 ---
 
-## Auto Scaling via GitOps (HPA)
+## Scaling via GitOps (Replica Management)
 
-This project implements **Horizontal Pod Autoscaling fully managed through GitOps**.
+This project demonstrates replica scaling managed through GitOps.
 
-* HPA configuration is defined declaratively in `hpa.yaml`
-* ArgoCD deploys and continuously enforces the HPA resource
-* Pod replicas scale automatically based on CPU utilization
-* Manual changes in the cluster are reverted to match Git state
+Application replica count is defined in the Helm values.yaml
 
-### Scaling Behavior
+Any change to replica count is committed to Git
 
-* Minimum replicas: 1
-* Maximum replicas: 5
-* Scaling metric: CPU utilization
+ArgoCD detects the change and synchronizes it to the cluster
 
-When application load increases, Kubernetes scales pods automatically, while ArgoCD ensures the scaling configuration always matches what is defined in Git.
+Kubernetes updates the Deployment to match the desired state from Git
+
+## Scaling Flow
+
+Replica count is modified in values.yaml
+
+Changes are committed and pushed to GitHub
+
+ArgoCD automatically syncs the update
+
+Kubernetes reconciles the Deployment replicas
+
+This ensures that Git remains the single source of truth for application scale.
+
 
 ---
 
@@ -143,7 +151,7 @@ NodePort is used to keep the setup simple, portable, and independent of cloud lo
 * Declarative GitOps workflow using ArgoCD
 * Helm chart–based Kubernetes deployment
 * Continuous reconciliation and self-healing
-* CPU-based Horizontal Pod Autoscaling via HPA
+* Application scaling via Git-controlled Helm values
 * Namespace isolation for application resources
 * External service exposure using NodePort
 
@@ -152,10 +160,15 @@ NodePort is used to keep the setup simple, portable, and independent of cloud lo
 
 ## Future Enhancements
 
-* Ingress controller with TLS
-* Monitoring using Prometheus and Grafana
-* Multi-environment GitOps (dev / staging / prod)
-* Secrets management and RBAC hardening
+Horizontal Pod Autoscaler (HPA) integration
+
+Ingress controller with TLS
+
+Monitoring using Prometheus and Grafana
+
+Multi-environment GitOps (dev / staging / prod)
+
+Secrets management and RBAC hardening
 
 ---
 
